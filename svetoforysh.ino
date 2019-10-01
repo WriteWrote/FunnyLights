@@ -1,31 +1,69 @@
-#define redLightPin 1
-#define yellowLightPin 2
-#define greenLightPin 3
+#define redLightPin 7
+#define yellowLightPin 6
+#define greenLightPin 5
 
-void setup (){
+#define buttonPin 2
 
-pinMode (redLightPin, OUTPUT);
-pinMode (yellowLightPin, OUTPUT);
-pinMode (greenLightPin, OUTPUT);
+volatile bool button = LOW;
 
-}
 
-void loop (){
+void changingLight() {
+  
+  digitalWrite(redLightPin, HIGH);
+  delay (3000);
+  digitalWrite(redLightPin, LOW);
 
-digitalWrite(redLightPin, HIGH);
-delay (1000);
-digitalWrite(redLightPin, LOW);
+  digitalWrite(yellowLightPin, HIGH);
+  delay (3000);
+  digitalWrite(yellowLightPin, LOW);
 
-digitalWrite(yellowLightPin, HIGH);
-delay (1000);
-digitalWrite(yellowLightPin, LOW);
-
-digitalWrite(greenLightPin, HIGH);
-delay (1000);
-digitalWrite(greenLightPin, LOW);
-
-digitalWrite(yellowLightPin, HIGH);
-delay (1000);
-digitalWrite(yellowLightPin, LOW);
+  digitalWrite(greenLightPin, HIGH);
+  delay (3000);
+  digitalWrite(greenLightPin, LOW);
 
 }
+
+void stopLight()
+{timer_handle_interrupts(3);
+}
+
+void timer_handle_interrupts(int timer){
+  
+  digitalWrite(redLightPin, LOW);
+  digitalWrite(yellowLightPin, LOW);
+  digitalWrite(greenLightPin, LOW);
+  
+  changingLight();
+  
+  }
+ 
+
+void setup () {
+  
+  Serial.begin(9600);
+
+  pinMode (redLightPin, OUTPUT);
+  pinMode (yellowLightPin, OUTPUT);
+  pinMode (greenLightPin, OUTPUT);
+
+  pinMode (buttonPin, INPUT_PULLUP);
+
+  attachInterrupt (0, stopLight,FALLING);
+}
+
+void loop () {
+  changingLight();
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+  
